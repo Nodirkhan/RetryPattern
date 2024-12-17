@@ -6,17 +6,20 @@
 
         private FooService TryCatch(ReturningNumberFunction returningNumberFunction)
         {
-            try
+            this.ReturningFunction = async () =>
             {
-                this.ReturningFunction = returningNumberFunction.Invoke;
+                try
+                {
+                    return await returningNumberFunction();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            };
 
-                return this;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+            return this;
         }
 
         private FooService Retry(int retryCount)
